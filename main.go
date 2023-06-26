@@ -19,9 +19,12 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", serveHome)
 	hub := newHub()
-	go hub.run()
-	for {
+	go hub.run() // TODO
+
+	http.HandleFunc("/", serveHome)
+	err := http.ListenAndServe("127.0.0.1:8080", nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
 	}
 }
