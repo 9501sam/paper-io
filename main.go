@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 )
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("enter serveHome()")
 	log.Println(r.URL)
 	if r.URL.Path != "/" {
 		http.Error(w, "Not found", http.StatusNotFound)
@@ -24,9 +26,9 @@ func main() {
 
 	http.HandleFunc("/", serveHome)
 
-	// http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-	// 	serveWs(hub, w, r)
-	// })
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		serveWs(hub, w, r)
+	})
 
 	err := http.ListenAndServe("127.0.0.1:8080", nil)
 	if err != nil {
